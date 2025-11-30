@@ -13,7 +13,7 @@ Dies ist ein vollständiges Kubernetes-Praxisprojekt bestehend aus:
 ---
 
 # Architektur (ASCII Diagramm)
-
+```
                  ┌──────────────────────────────┐
                  │        Browser / Client       │
                  │  https://miniapp.local        │
@@ -24,9 +24,9 @@ Dies ist ein vollständiges Kubernetes-Praxisprojekt bestehend aus:
                    │   ingress-nginx        │
                    │ (Ingress Controller)   │
                    └──────────┬────────────┘
-            ┌──────────────────┴───────────────────┐
-            │                                      │
-            ▼                                      ▼
+            ┌─────────────────┴───────────────────┐
+            │                                     │
+            ▼                                     ▼
  ┌───────────────────────┐               ┌───────────────────────┐
  │     Frontend Service  │               │     Backend Service   │
  │     ClusterIP:80      │               │     ClusterIP:3000     │
@@ -44,7 +44,7 @@ Dies ist ein vollständiges Kubernetes-Praxisprojekt bestehend aus:
                                             │  PVC: db-pvc          │
                                             └──────────────────────┘
 
----
+```
 
 
 # Projektstruktur
@@ -222,4 +222,4 @@ openssl s_client -connect miniapp.local:443 -servername miniapp.local </dev/null
 ```
  kubectl get secret miniapp-tls -n miniapp -o yaml | head
 ```
- 
+
