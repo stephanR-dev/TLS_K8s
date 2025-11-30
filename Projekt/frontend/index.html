@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Mini Cloud Native App</title>
+  </head>
+  <body>
+    <h1>Frontend läuft</h1>
+    <button onclick="loadUsers()">Benutzer laden</button>
+    <pre id="output"></pre>
+    <script>
+      async function loadUsers() {
+        const res = await fetch("/users");
+        const data = await res.json();
+        document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+      }
+    </script>
+  </body>
+</html>

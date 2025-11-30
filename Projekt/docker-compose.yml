@@ -1,0 +1,31 @@
+version: "3.9"                                      #Version des Compose Dateiformats
+services:                                           #ab hier werden unsere Container definiert
+  db:                                         
+    image: mariadb                                  # offizielles MariaDB Image vom Docker Hub --> image beschreibt hier das ein image aus dem Docker Hub genommen werden soll
+    environment:                                    #Umgebungsvariablen --> z.B. Anmeldedaten, Name
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  #Variable wird über .env Datei vewaltet
+      - MYSQL_DATABASE=${MYSQL_DATABASE}            #Variable wird über .env Datei vewaltet
+    volumes:                                        #hier können wir angeben, ob ein Volume genutzt werden soll
+      - db_data:/var/lib/mysql
+
+  backend:
+    image: stephanrdev/smalbackend:v1                                #verweis auf den entsprechende Dockerfile
+    ports:                                          
+      - "30300:3000"                                 #[Hostport]:[Containerport] --> Portmapping
+    environment:
+      - DB_HOST=${DB_HOST}                          #Variable wird über .env Datei vewaltet
+      - DB_USER=${DB_USER}                          #Variable wird über .env Datei vewaltet
+      - DB_PASSWORD=${DB_PASSWORD}                  #Variable wird über .env Datei vewaltet
+      - DB_NAME=${DB_NAME}                          #Variable wird über .env Datei vewaltet
+    depends_on:                                     #Abhängigkeiten von anderen Services
+      - db                                          #ist abhängig vom Service "db" --> warten bis die db gestartet ist
+
+  frontend:
+    image: stephanrdev/smalfrontend:v1                              #verweis auf den entsprechende Dockerfile
+    ports:
+      - "30080:80"                                   #[Hostport]:[Containerport] --> Portmapping
+    depends_on:                                     #Abhängigkeiten von anderen Services
+      - backend                                     #ist abhängig vom Service "backend" --> warten bis das backend gestartet ist
+
+volumes:
+  db_data:
