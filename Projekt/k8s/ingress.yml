@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: miniapp-ingress
+  namespace: miniapp
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" # Redirect HTTP to HTTPS after TLS is set up "kubectl create secret tls" Check: 'kubectl describe ingress miniapp-ingress -n miniapp'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - miniapp.local
+      secretName: miniapp-tls
+  rules:
+    - host: miniapp.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 3000
